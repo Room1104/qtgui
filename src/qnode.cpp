@@ -74,14 +74,18 @@ bool QNode::init(const std::string &master_url, const std::string &host_url) {
 }
 
 bool QNode::triggerService(const std::string &s){
+    log(Info,"calling service " + s);
     ros::NodeHandle n;
     ros::ServiceClient c = n.serviceClient<std_srvs::Trigger>(s);
     std_srvs::Trigger t;
     if(c.call(t)){
+        log(Info,"call succeeded");
         std::cout << "service called OK: " << t.response.message << std::endl;
         return true;
-    } else
+    } else {
+        log(Error,"SERVICE CALL FAILED");
         return false;
+    }
 }         
 
 
@@ -90,15 +94,18 @@ void QNode::run() {
     int count = 0;
     while ( ros::ok() ) {
         
+        // jcf - we're not sending these messages.
+/*        
         std_msgs::String msg;
         std::stringstream ss;
         ss << "hello world " << count;
         msg.data = ss.str();
         chatter_publisher.publish(msg);
         log(Info,std::string("I sent: ")+msg.data);
+        ++count;
+ */
         ros::spinOnce();
         loop_rate.sleep();
-        ++count;
     }
     std::cout << "Ros shutdown, proceeding to close the gui." << std::endl;
     Q_EMIT rosShutdown(); // used to signal the gui for a shutdown (useful to roslaunch)
