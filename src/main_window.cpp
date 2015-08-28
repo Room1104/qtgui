@@ -60,7 +60,7 @@ void MainWindow::showNoMasterMessage() {
 
 void MainWindow::onClickButton(){
     std::cout << "Button\n";
-    if(qnode.triggerService("pushbutton/one"))
+    if(qnode.triggerService("pushbutton/1"))
         std::cout << "Success\n";
     else
         std::cout << "Failure\n";
