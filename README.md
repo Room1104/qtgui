@@ -18,3 +18,7 @@ speech system to say some text.
 
 The basic idea is to split the UI stuff, which is better written in C++
 and Qt form editing, from the logic, which is better written in Python.
+
+## Launching
+
+Launch with `roslaunch qtgui qtgui.launch`.
