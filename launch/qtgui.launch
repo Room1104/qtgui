@@ -1,6 +1,4 @@
 <launch>
-    <include file="$(find mary_tts)/launch/ros_mary.launch"/>
-
     <node pkg="qtgui" name="gui" type="qtgui"/>
     <node pkg="qtgui" name="serv" type="testservice.py"/>
 </launch>
