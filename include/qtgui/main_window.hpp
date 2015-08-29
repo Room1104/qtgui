@@ -46,7 +46,12 @@ public:
     void setHLevel(double level);
     
 public Q_SLOTS:
-    void onClickButton();
+    void onClickButtonSpeak();
+    void onClickButton1();
+    void onClickButton2();
+    void onClickButton3();
+    void onClickButton4();
+    void onClickButton5();
 private:
     Ui::MainWindowDesign ui;
     QNode qnode;

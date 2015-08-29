@@ -30,15 +30,16 @@ greets = ["hello","good day","hi there"]
 def randomgreet(req):
     t = random.choice(greets)
     return say(t)
-    
-    
-def add_pushbutton_service():
-    rospy.init_node('dispatcher')
+
+def start_services():
     rospy.Service('qtgui/dispatcher/randomgreet',std_srvs.srv.Trigger,
         randomgreet)    
-
-    print "pushbutton service up"
+    print "services up"
+    
+def startup():
+    rospy.init_node('dispatcher')
+    start_services()
     rospy.spin()
     
 if __name__ == "__main__":
-    add_pushbutton_service()
+    startup()

@@ -38,7 +38,12 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     if(!qnode.init())
         showNoMasterMessage();
     // wire up the UI elements here.
-    connect(ui.pushButton,SIGNAL(clicked()),this,SLOT(onClickButton()));
+    connect(ui.pushButton_speak,SIGNAL(clicked()),this,SLOT(onClickButtonSpeak()));
+    connect(ui.pushButton_1,SIGNAL(clicked()),this,SLOT(onClickButton1()));
+    connect(ui.pushButton_2,SIGNAL(clicked()),this,SLOT(onClickButton2()));
+    connect(ui.pushButton_3,SIGNAL(clicked()),this,SLOT(onClickButton3()));
+    connect(ui.pushButton_4,SIGNAL(clicked()),this,SLOT(onClickButton4()));
+    connect(ui.pushButton_5,SIGNAL(clicked()),this,SLOT(onClickButton5()));
 }
 
 MainWindow::~MainWindow() {}
@@ -64,12 +69,23 @@ void MainWindow::showNoMasterMessage() {
 ** Implemenation [Slots][manually connected]
 *****************************************************************************/
 
-void MainWindow::onClickButton(){
-    std::cout << "Button\n";
-    if(qnode.triggerService("qtgui/dispatcher/randomgreet"))
-        std::cout << "Success\n";
-    else
-        std::cout << "Failure\n";
+void MainWindow::onClickButtonSpeak(){
+    qnode.triggerService("qtgui/dispatcher/randomgreet");
+}
+void MainWindow::onClickButton1(){
+    qnode.triggerService("qtgui/dispatcher/1");
+}
+void MainWindow::onClickButton2(){
+    qnode.triggerService("qtgui/dispatcher/2");
+}
+void MainWindow::onClickButton3(){
+    qnode.triggerService("qtgui/dispatcher/3");
+}
+void MainWindow::onClickButton4(){
+    qnode.triggerService("qtgui/dispatcher/4");
+}
+void MainWindow::onClickButton5(){
+    qnode.triggerService("qtgui/dispatcher/5");
 }
 
 
