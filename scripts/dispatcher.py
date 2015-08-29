@@ -9,10 +9,14 @@ import mary_tts.msg
 
 def say(text):
     c = actionlib.SimpleActionClient('speak',mary_tts.msg.maryttsAction)
-    c.wait_for_server()
+    if(not c.wait_for_server(timeout=rospy.Duration(10))):
+        print "Failed to connect to server"
+        return std_srvs.srv.TriggerResponse(False,"failed to connect to server");
     goal = mary_tts.msg.maryttsGoal(text)
     c.send_goal(goal)
-    c.wait_for_result()
+    if(not c.wait_for_result(timeout=rospy.Duration(10))):
+        print "Failed to get result"
+        return std_srvs.srv.TriggerResponse(False,"failed to get result");
     return std_srvs.srv.TriggerResponse(True,text);
 
 
