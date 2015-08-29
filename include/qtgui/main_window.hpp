@@ -48,6 +48,8 @@ Q_SIGNALS:
     void colchange();
 public Q_SLOTS:
     void onClickButtonSpeak();
+    void onClickButtonPet();
+    void onClickButtonPunish();
     void onClickButton1();
     void onClickButton2();
     void onClickButton3();
