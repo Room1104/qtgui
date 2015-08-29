@@ -22,3 +22,12 @@ and Qt form editing, from the logic, which is better written in Python.
 ## Launching
 
 Launch with `roslaunch qtgui qtgui.launch`.
+
+## AES
+
+The `aes.py` script
+* publishes the hormone level from -1 to 1 on the output topic `/hlevel`
+* releases the hormone according to the level of the input topic `/hrelease`
+* kicks the hormone down if the service `/aes/nasty` is called
+* kicks the hormone up if the service `/aes/nice` is called
+* geometrically decays the hormone level to zero over time
