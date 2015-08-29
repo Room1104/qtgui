@@ -44,7 +44,8 @@ public:
         return inst;
     }
     void setHLevel(double level);
-    
+Q_SIGNALS:
+    void colchange();
 public Q_SLOTS:
     void onClickButtonSpeak();
     void onClickButton1();
@@ -52,9 +53,11 @@ public Q_SLOTS:
     void onClickButton3();
     void onClickButton4();
     void onClickButton5();
+    void updateColour();
 private:
     Ui::MainWindowDesign ui;
     QNode qnode;
+    double hlevel;
 };
 
 }  // namespace qtgui

@@ -44,13 +44,29 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     connect(ui.pushButton_3,SIGNAL(clicked()),this,SLOT(onClickButton3()));
     connect(ui.pushButton_4,SIGNAL(clicked()),this,SLOT(onClickButton4()));
     connect(ui.pushButton_5,SIGNAL(clicked()),this,SLOT(onClickButton5()));
+    connect(this,SIGNAL(colchange()),this,SLOT(updateColour()));
 }
 
 MainWindow::~MainWindow() {}
 
 void MainWindow::setHLevel(double level){
     ui.hlevel->setText(QString::number(level));
+    hlevel=level;
+    colchange();
 }
+
+void MainWindow::updateColour(){
+    int r=1,g=1,b=1;
+    QColor c;
+    double mood = hlevel*120; // red=0,green=120 in hsv
+    c.setHsv(mood,255,255);
+    c.getRgb(&r,&g,&b);
+    QString color = QString("background-color: rgb("+
+                            QString::number(r)+","+QString::number(g)+","+
+                            QString::number(b)+");");
+    setStyleSheet(color);
+}
+    
 
 
 /*****************************************************************************

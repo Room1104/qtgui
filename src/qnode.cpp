@@ -99,7 +99,7 @@ bool QNode::triggerService(const std::string &s){
 
 
 void QNode::run() {
-    ros::Rate loop_rate(0.1);
+    ros::Rate loop_rate(5);
     int count = 0;
     while ( ros::ok() ) {
         
