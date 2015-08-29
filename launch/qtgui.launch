@@ -1,4 +1,4 @@
 <launch>
     <node pkg="qtgui" name="gui" type="qtgui"/>
-    <node pkg="qtgui" name="serv" type="testservice.py"/>
+    <node pkg="qtgui" name="serv" type="dispatcher.py"/>
 </launch>

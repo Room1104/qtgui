@@ -60,7 +60,7 @@ void MainWindow::showNoMasterMessage() {
 
 void MainWindow::onClickButton(){
     std::cout << "Button\n";
-    if(qnode.triggerService("pushbutton/1"))
+    if(qnode.triggerService("qtgui/dispatcher/1"))
         std::cout << "Success\n";
     else
         std::cout << "Failure\n";
