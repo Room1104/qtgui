@@ -15,9 +15,11 @@
 #include <iostream>
 #include <string>
 #include <std_msgs/String.h>
+#include <std_msgs/Float64.h>
 #include <std_srvs/Trigger.h>
 #include <sstream>
 #include "../include/qtgui/qnode.hpp"
+#include "../include/qtgui/main_window.hpp"
 
 /*****************************************************************************
 ** Namespaces
@@ -47,11 +49,12 @@ bool QNode::init() {
     if ( ! ros::master::check() ) {
         return false;
     }
-    printf("Init ok\n");exit(1);
     ros::start(); // explicitly needed since our nodehandle is going out of scope.
     ros::NodeHandle n;
     // Add your ros communications here.
     chatter_publisher = n.advertise<std_msgs::String>("chatter", 1000);
+    hlevel_subscriber = n.subscribe<std_msgs::Float64>("hlevel",1000,
+                                                       &QNode::hlevel_callback,this);
     start();
     return true;
 }
@@ -64,13 +67,19 @@ bool QNode::init(const std::string &master_url, const std::string &host_url) {
     if ( ! ros::master::check() ) {
         return false;
     }
-    printf("Init ok\n");exit(1);
     ros::start(); // explicitly needed since our nodehandle is going out of scope.
     ros::NodeHandle n;
     // Add your ros communications here.
     chatter_publisher = n.advertise<std_msgs::String>("chatter", 1000);
+    
     start();
+    printf("All init ok\n");
     return true;
+}
+
+void QNode::hlevel_callback(std_msgs::Float64 message){
+    printf("RECEIVED %f\n",message.data);
+    MainWindow::getInstance()->setHLevel(message.data);
 }
 
 bool QNode::triggerService(const std::string &s){
@@ -90,12 +99,12 @@ bool QNode::triggerService(const std::string &s){
 
 
 void QNode::run() {
-    ros::Rate loop_rate(1);
+    ros::Rate loop_rate(0.1);
     int count = 0;
     while ( ros::ok() ) {
         
         // jcf - we're not sending these messages.
-/*        
+        
         std_msgs::String msg;
         std::stringstream ss;
         ss << "hello world " << count;
@@ -103,7 +112,7 @@ void QNode::run() {
         chatter_publisher.publish(msg);
         log(Info,std::string("I sent: ")+msg.data);
         ++count;
- */
+
         ros::spinOnce();
         loop_rate.sleep();
     }

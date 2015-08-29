@@ -17,6 +17,7 @@
 *****************************************************************************/
 
 #include <ros/ros.h>
+#include <std_msgs/Float64.h>
 #include <string>
 #include <QThread>
 #include <QStringListModel>
@@ -54,6 +55,7 @@ class QNode : public QThread {
     
     QStringListModel* loggingModel() { return &logging_model; }
     void log( const LogLevel &level, const std::string &msg);
+    void hlevel_callback(std_msgs::Float64 message);
     
 Q_SIGNALS:
     void loggingUpdated();
@@ -63,6 +65,7 @@ private:
     int init_argc;
     char** init_argv;
     ros::Publisher chatter_publisher;
+    ros::Subscriber hlevel_subscriber;
     QStringListModel logging_model;
 };
 

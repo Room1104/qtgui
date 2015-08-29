@@ -38,6 +38,13 @@ class MainWindow : public QMainWindow {
     void closeEvent(QCloseEvent *event); // Overloaded function
     void showNoMasterMessage();
     
+    static MainWindow *inst;
+public:
+    static MainWindow *getInstance() {
+        return inst;
+    }
+    void setHLevel(double level);
+    
 public Q_SLOTS:
     void onClickButton();
 private:

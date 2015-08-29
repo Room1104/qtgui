@@ -35,12 +35,45 @@
         <rect>
          <x>10</x>
          <y>10</y>
-         <width>511</width>
-         <height>371</height>
+         <width>181</width>
+         <height>71</height>
         </rect>
        </property>
        <property name="text">
         <string>PushButton</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>110</y>
+         <width>81</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Happiness</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="hlevel">
+       <property name="geometry">
+        <rect>
+         <x>100</x>
+         <y>100</y>
+         <width>221</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>26</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>0</string>
        </property>
       </widget>
      </widget>

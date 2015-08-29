@@ -25,22 +25,28 @@ using namespace Qt;
 /*****************************************************************************
 ** Implementation [MainWindow]
 *****************************************************************************/
+MainWindow *MainWindow::inst=NULL;
 
 MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
       : QMainWindow(parent)
 , qnode(argc,argv)
 {
+    inst = this;
     ui.setupUi(this); // Calling this incidentally connects all ui's triggers to on_...() callbacks in this class.
     printf("Main window init\n");
     //    if(!qnode.init("http://127.0.0.1:11311/","127.0.0.1"))
     if(!qnode.init())
         showNoMasterMessage();
-    
     // wire up the UI elements here.
     connect(ui.pushButton,SIGNAL(clicked()),this,SLOT(onClickButton()));
 }
 
 MainWindow::~MainWindow() {}
+
+void MainWindow::setHLevel(double level){
+    ui.hlevel->setText(QString::number(level));
+}
+
 
 /*****************************************************************************
 ** Implementation [Slots]
