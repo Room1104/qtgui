@@ -75,6 +75,7 @@ def update():
     global hconc,hlevel,decayrate,releaserate,tempreleaserate,peoplerelease
     global peoplereleasefactor,smilereleasefactor,tempreleasefactor
     global smilecount
+    global homerelease,homereleasefactor
     r = releaserate
     r = r+tempreleaserate*tempreleasefactor
     r = r+smilecount*smilereleasefactor
@@ -160,6 +161,7 @@ def setpeople(p):
 
 
 def setnode(x):
+    global homerelease
     if x=='ChargingPoint':
         homerelease = 1
     else:
