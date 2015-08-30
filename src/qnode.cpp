@@ -107,8 +107,8 @@ void QNode::run() {
     int count = 0;
     while ( ros::ok() ) {
         
-        // jcf - we're not sending these messages.
-        
+        // jcf - we're not sending these messages.        
+        /*
         std_msgs::String msg;
         std::stringstream ss;
         ss << "hello world " << count;
@@ -116,7 +116,7 @@ void QNode::run() {
         chatter_publisher.publish(msg);
         log(Info,std::string("I sent: ")+msg.data);
         ++count;
-
+*/
         ros::spinOnce();
         loop_rate.sleep();
     }
