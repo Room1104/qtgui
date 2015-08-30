@@ -2,4 +2,9 @@
     <node pkg="qtgui" name="gui" type="qtgui"/>
     <node pkg="qtgui" name="serv" type="dispatcher.py" cwd="node"/>
     <node pkg="qtgui" name="aes" type="aes.py" cwd="node"/>
+    <node pkg="smile_detector" name="smile_detect" type="smile_detect.py" cwd="node"/>
+<!--
+    <node pkg="wait_action" name="wait" type="wait_node.py"/>
+    <node pkg="task_executor" name="taskexec" type="schedule_status.py"/>
+-->
 </launch>
