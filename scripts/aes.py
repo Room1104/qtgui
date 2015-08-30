@@ -8,10 +8,19 @@ import std_srvs.srv
 from std_msgs.msg import Float64
 from math import exp
 
-hlevel=0
+hconc=0
 centre = 0
 width = 0.1
-decayrate=0.95 # geometric decay
+
+# geometric decay rate
+decayrate=rospy.get_param('/aes/decayrate',0.99)
+# release multiplied by this
+releasefactor=rospy.get_param('/aes/release',0.02)
+# amount released by nice/nasty services
+tempreleasefactor=rospy.get_param('/aes/nudge',1)
+
+print "Decayrate="+str(decayrate)
+
 releaserate=0
 tempreleaserate=0
 
@@ -28,19 +37,22 @@ for x in [x/10.0 for x in range(-10,10)]:
 
 
 def update():
-    global hlevel,decayrate,releaserate,tempreleaserate
-    r = (releaserate+tempreleaserate)*0.1*(0.95-hlevel)
+    global hconc,decayrate,releaserate,tempreleaserate
+    r = (releaserate+tempreleaserate*tempreleasefactor)*releasefactor*(0.95-hconc)
     tempreleaserate=0
-    hlevel = (hlevel+r)*decayrate
-    return sigmoid(hlevel)
+    hconc = (hconc+r)*decayrate
 
 def startpublisherandwait():
-    pub = rospy.Publisher('hlevel',Float64,queue_size=100)
+    global hconc
+    pubc = rospy.Publisher('hconc',Float64,queue_size=100)
+    publ = rospy.Publisher('hlevel',Float64,queue_size=100)
     rate = rospy.Rate(3) # 3Hz
     while not rospy.is_shutdown():
-        h=update()
-        print(h)
-        pub.publish(h)
+        update()
+        hlevel = sigmoid(hconc)
+        print(str(hconc)+" -> "+str(hlevel))
+        pubc.publish(hconc)
+        publ.publish(hlevel)
         rate.sleep()
         
 def setrelease(r):
