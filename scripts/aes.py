@@ -146,7 +146,7 @@ def startsubscribers():
     rospy.Subscriber('hrelease',Float64,
         lambda x: setrelease(x.data))
     rospy.Subscriber('/people_tracker/positions',PeopleTracker,
-        lambda x: setpeople(x.data))
+        lambda x: setpeople(x))
     
         
 def startservices():
