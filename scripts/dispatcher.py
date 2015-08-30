@@ -11,6 +11,9 @@ from strands_executive_msgs.msg import Task
 from strands_executive_msgs import task_utils
 from strands_executive_msgs.srv import AddTasks, DemandTask, SetExecutionStatus
 
+f = open('jokes.txt','r')
+jokes = [x.strip() for x in f.read().split('%%')]
+
 def say(text):
     c = actionlib.SimpleActionClient('speak',mary_tts.msg.maryttsAction)
     if(not c.wait_for_server(timeout=rospy.Duration(10))):
@@ -34,6 +37,9 @@ def randomgreet(req):
     t = random.choice(greets)
     return say(t)
 
+def randomjoke(req):
+    t = random.choice(jokes)
+    return say(t)
 
 # Waypoint scheduling stuff
 
@@ -96,6 +102,8 @@ def wait_waypoint(wp_num):
 def start_services():
     rospy.Service('qtgui/dispatcher/randomgreet',std_srvs.srv.Trigger,
         randomgreet)    
+    rospy.Service('qtgui/dispatcher/joke',std_srvs.srv.Trigger,
+        randomjoke)    
     rospy.Service('qtgui/dispatcher/1',std_srvs.srv.Trigger,
         wait_waypoint1 )    
     rospy.Service('qtgui/dispatcher/2',std_srvs.srv.Trigger,

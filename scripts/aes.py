@@ -6,6 +6,7 @@ import actionlib
 import random
 import std_srvs.srv
 from std_msgs.msg import Float64
+from std_msgs.msg import Int8
 from math import exp
 
 hconc=0
@@ -18,10 +19,11 @@ decayrate=rospy.get_param('/aes/decayrate',0.99)
 releasefactor=rospy.get_param('/aes/release',0.02)
 # amount released by nice/nasty services
 tempreleasefactor=rospy.get_param('/aes/nudge',1)
-
-print "Decayrate="+str(decayrate)
+# amount released by smiles
+smilereleasefactor=rospy.get_param('/aes/smile',0.1)
 
 releaserate=0
+smilecount=0
 tempreleaserate=0
 
 def sigmoid(x):
@@ -34,11 +36,10 @@ def sigmoid(x):
 for x in [x/10.0 for x in range(-10,10)]:
     print str(x)+" "+str(sigmoid(x))
 
-
-
 def update():
     global hconc,decayrate,releaserate,tempreleaserate
-    r = (releaserate+tempreleaserate*tempreleasefactor)*releasefactor*(0.95-hconc)
+    r = releaserate+tempreleaserate*tempreleasefactor+smilecount*smilereleasefactor
+    r = r*releasefactor*(0.95-hconc)
     tempreleaserate=0
     hconc = (hconc+r)*decayrate
 
@@ -59,12 +60,18 @@ def setrelease(r):
     global releaserate
     releaserate = r
     
+def setsmile(s):
+    global smilecount
+    smilecount = s
+    
 def bumprelease(r):
     global tempreleaserate
     tempreleaserate = r
     return std_srvs.srv.TriggerResponse(True,'');
 
-def startsubscriber():
+def startsubscribers():
+    subsmile = rospy.Subscriber('smile_detector',Int8,
+        lambda x: setsmile(x.data))
     rospy.Subscriber('hrelease',Float64,
         lambda x: setrelease(x.data))
         
@@ -76,7 +83,7 @@ def startservices():
 
 def start():
     rospy.init_node("aes",anonymous=True)
-    startsubscriber()
+    startsubscribers()
     startservices()
     startpublisherandwait()
     
