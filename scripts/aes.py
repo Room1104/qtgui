@@ -115,7 +115,7 @@ def ramp(x,a,b):
 def peak(x,v,w):
     return min(ramp(x,v-w,v),1.0-ramp(x,v,v+w))
 
-def setpeople(p):
+def setpeopleOLD(p):
     global peoplerelease
     t=0
     good=0
@@ -139,6 +139,23 @@ def setpeople(p):
     peoplerelease = good-bad
 #    sys.stderr.write(str(peoplerelease)+"\n")
         
+
+def setpeople(p):
+    global peoplerelease
+    ct=0
+    for d,a in zip(p.distances,p.angles):
+        if d<4:
+            ct=ct+1
+    if ct<3:
+        peoplerelease=1
+    else:
+        peoplerelease=-1
+                    
+
+
+
+    
+    
 
 def startsubscribers():
     rospy.Subscriber('smile_detector',Int8,
