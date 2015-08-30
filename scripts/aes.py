@@ -137,7 +137,7 @@ def setpeople(p):
     # we end up with "good/bad", but lots of close people is very bad.
     bad = max(bad,ramp(closeppl,2,4))
     peoplerelease = good-bad
-    sys.stderr.write(str(peoplerelease)+"\n")
+#    sys.stderr.write(str(peoplerelease)+"\n")
         
 
 def startsubscribers():
