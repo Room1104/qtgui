@@ -55,6 +55,8 @@ bool QNode::init() {
     chatter_publisher = n.advertise<std_msgs::String>("chatter", 1000);
     hlevel_subscriber = n.subscribe<std_msgs::Float64>("hlevel",1000,
                                                        &QNode::hlevel_callback,this);
+    smiles_subscriber = n.subscribe<std_msgs::Int8>("smile_detector",1000,
+                                                       &QNode::smiles_callback,this);
     start();
     return true;
 }
@@ -78,8 +80,10 @@ bool QNode::init(const std::string &master_url, const std::string &host_url) {
 }
 
 void QNode::hlevel_callback(std_msgs::Float64 message){
-    printf("RECEIVED %f\n",message.data);
     MainWindow::getInstance()->setHLevel(message.data);
+}
+void QNode::smiles_callback(std_msgs::Int8 message){
+    MainWindow::getInstance()->setSmiles(message.data);
 }
 
 bool QNode::triggerService(const std::string &s){

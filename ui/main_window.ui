@@ -236,6 +236,26 @@
         <string>PUNISH</string>
        </property>
       </widget>
+      <widget class="QLineEdit" name="smiles">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>570</y>
+         <width>221</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+      </widget>
      </widget>
     </item>
    </layout>

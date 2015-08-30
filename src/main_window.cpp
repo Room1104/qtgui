@@ -56,6 +56,9 @@ void MainWindow::setHLevel(double level){
     hlevel=level;
     colchange();
 }
+void MainWindow::setSmiles(int n){
+    ui.smiles->setText(QString::number(n));
+}
 
 void MainWindow::updateColour(){
     int r=1,g=1,b=1;

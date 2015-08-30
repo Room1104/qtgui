@@ -44,6 +44,7 @@ public:
         return inst;
     }
     void setHLevel(double level);
+    void setSmiles(int n);
 Q_SIGNALS:
     void colchange();
 public Q_SLOTS:
