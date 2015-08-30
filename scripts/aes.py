@@ -8,6 +8,7 @@ import std_srvs.srv
 import mary_tts.msg
 from std_msgs.msg import Float64
 from std_msgs.msg import Int8
+from std_msgs.msg import String
 from bayes_people_tracker.msg import PeopleTracker
 from math import exp
 
@@ -23,14 +24,18 @@ releasefactor=rospy.get_param('/aes/release',0.02)
 # amount released by nice/nasty services
 tempreleasefactor=rospy.get_param('/aes/nudge',1)
 # amount released by smiles
-smilereleasefactor=rospy.get_param('/aes/smile',0.2)
+smilereleasefactor=rospy.get_param('/aes/smile',0.4)
 # amount released by people
 peoplereleasefactor=rospy.get_param('/aes/people',0.2)
+# amount released by home node
+homereleasefactor=rospy.get_param('/aes/home',0.1)
+
 
 releaserate=0
 smilecount=0
 tempreleaserate=0
 peoplerelease=0
+homerelease=0
 
 def sigmoid(x):
     x=(x-centre)/width
@@ -74,6 +79,7 @@ def update():
     r = r+tempreleaserate*tempreleasefactor
     r = r+smilecount*smilereleasefactor
     r = r+peoplerelease*peoplereleasefactor
+    r = r+homerelease*homereleasefactor
     r = r*releasefactor*(0.95-hconc)
     tempreleaserate=0
     hconc = (hconc+r)*decayrate
@@ -148,12 +154,16 @@ def setpeople(p):
             ct=ct+1
     if ct<3 and ct>0:
         peoplerelease=1
-    else:
+    elif ct>=3:
         peoplerelease=-1
                     
 
 
-
+def setnode(x):
+    if x=='ChargingPoint':
+        homerelease = 1
+    else:
+        homerelease = 0
     
     
 
@@ -164,6 +174,8 @@ def startsubscribers():
         lambda x: setrelease(x.data))
     rospy.Subscriber('/people_tracker/positions',PeopleTracker,
         lambda x: setpeople(x))
+    rospy.Subscriber('/current_node',String,
+        lambda x: setnode(x.data))
     
         
 def startservices():
