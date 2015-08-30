@@ -6,11 +6,14 @@ import actionlib
 import random
 import std_srvs.srv
 import mary_tts.msg
+import time
 from std_msgs.msg import Float64
 from std_msgs.msg import Int8
 from std_msgs.msg import String
 from bayes_people_tracker.msg import PeopleTracker
 from math import exp
+
+nextannounce = time.time() + 20
 
 hconc=0
 centre = 0
@@ -91,7 +94,7 @@ def gohome():
 def update():
     global hconc,hlevel,decayrate,releaserate,tempreleaserate,peoplerelease
     global peoplereleasefactor,smilereleasefactor,tempreleasefactor
-    global smilecount
+    global smilecount,nextannounce
     global homerelease,homereleasefactor
     global goingHome
     r = releaserate
@@ -107,6 +110,9 @@ def update():
         say("I have had enough. I am going home.")
         gohome()
         goingHome=True
+    if time.time() > nextannounce:
+        nextannounce = nextannounce+random.uniform(20,120)
+        utterance()
 
 def startpublisherandwait():
     global hconc,hlevel
