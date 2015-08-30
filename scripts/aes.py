@@ -155,7 +155,7 @@ def startservices():
     rospy.Service('aes/nasty',std_srvs.srv.Trigger,
         lambda req: bumprelease(-0.5))
     rospy.Service('aes/speak',std_srvs.srv.Trigger,speakserv)
-
+    
 def start():
     update()
 

@@ -7,6 +7,9 @@ import random
 import std_srvs.srv
 import mary_tts.msg
 
+f = open('jokes.txt','r')
+jokes = [x.strip() for x in f.read().split('%%')]
+
 from strands_executive_msgs.msg import Task
 from strands_executive_msgs import task_utils
 from strands_executive_msgs.srv import AddTasks, DemandTask, SetExecutionStatus
@@ -26,6 +29,10 @@ def say(text):
 def mksay(name,text):
     rospy.Service('qtgui/dispatcher/'+name,std_srvs.srv.Trigger,
         lambda req: say(text))
+
+def randomjoke(req):
+    t = random.choice(jokes)
+    return say(t)
     
 # Waypoint scheduling stuff
 
@@ -34,6 +41,8 @@ def get_service(service_name, service_type):
     rospy.wait_for_service(service_name)
     rospy.loginfo("Done")        
     return rospy.ServiceProxy(service_name, service_type)
+    
+
 
 def get_execution_status_service():
     return get_service('/task_executor/set_execution_status', SetExecutionStatus)
@@ -96,6 +105,8 @@ def start_services():
         wait_waypoint4 )    
     rospy.Service('qtgui/dispatcher/5',std_srvs.srv.Trigger,
         wait_waypoint5 )    
+    rospy.Service('qtgui/dispatcher/joke',std_srvs.srv.Trigger,
+        randomjoke)
     print "services up"
     
 def startup():
