@@ -16,17 +16,17 @@ I feel bad.
 %%
 I don't feel good.
 %%
-This is not good.
+This isn't good.
 %%
 I feel OK.
 %%
-All my circuits are functioning normally.
-%%
 I feel reasonably OK.
 %%
-Tum te dum.
+Things are fine.
 %%
-All is well.
+All my circuits are fully functional.
+%%
+Tum te dum.
 %%
 This is OK.
 %%
@@ -44,13 +44,15 @@ I feel good.
 %%
 I am happy.
 %%
-I feel great.
+I am very cheerful.
+%%
+What fun!
 %%
 I am very happy.
 %%
-I'm having a great time.
-%%
 I am filled with joy.
+%%
+I'm having a great time.
 %%
 I'm really happy!
 %%
