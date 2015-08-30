@@ -70,7 +70,7 @@ def utterance():
     global hlevel
     q = random.gauss(hlevel,0.1)
     q = min(max(q,0),1)
-    q = int(q*len(utterances))
+    q = int(q*(len(utterances)-1))
     t = utterances[q]
     say(t)
     return t
