@@ -146,7 +146,7 @@ def setpeople(p):
     for d,a in zip(p.distances,p.angles):
         if d<4:
             ct=ct+1
-    if ct<3:
+    if ct<3 and ct>0:
         peoplerelease=1
     else:
         peoplerelease=-1
