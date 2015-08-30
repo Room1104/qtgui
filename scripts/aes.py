@@ -6,6 +6,9 @@ import actionlib
 import random
 import std_srvs.srv
 import mary_tts.msg
+from strands_executive_msgs.msg import Task
+from strands_executive_msgs import task_utils
+from strands_executive_msgs.srv import AddTasks, DemandTask, SetExecutionStatus
 import time
 from std_msgs.msg import Float64
 from std_msgs.msg import Int8
@@ -106,7 +109,7 @@ def update():
     tempreleaserate=0
     hconc = (hconc+r)*decayrate
     hlevel = sigmoid(hconc)
-    if hlevel<0.01 and not goingHome:
+    if hlevel<0.05 and not goingHome:
         say("I have had enough. I am going home.")
         gohome()
         goingHome=True
@@ -181,9 +184,9 @@ def setpeople(p):
     for d,a in zip(p.distances,p.angles):
         if d<4:
             ct=ct+1
-    if ct<3 and ct>0:
+    if ct<2 and ct>0:
         peoplerelease=1
-    elif ct>=3:
+    elif ct>=2:
         peoplerelease=-1
                     
 
