@@ -135,7 +135,7 @@ def setpeople(p):
         # bad is (close and behind) or veryclose
         bad = max(bad,min(close,behind),veryclose)
     # we end up with "good/bad", but lots of close people is very bad.
-    bad = max(bad,ramp(close,2,4))
+    bad = max(bad,ramp(closeppl,2,4))
     peoplerelease = good-bad
     sys.stderr.write(str(peoplerelease)+"\n")
         
