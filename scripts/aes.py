@@ -20,7 +20,7 @@ releasefactor=rospy.get_param('/aes/release',0.02)
 # amount released by nice/nasty services
 tempreleasefactor=rospy.get_param('/aes/nudge',1)
 # amount released by smiles
-smilereleasefactor=rospy.get_param('/aes/smile',0.1)
+smilereleasefactor=rospy.get_param('/aes/smile',0.2)
 
 releaserate=0
 smilecount=0
