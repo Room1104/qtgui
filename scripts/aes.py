@@ -158,8 +158,6 @@ def startservices():
 
 def start():
     update()
-    p={'distances':[3,5,4],'angles':[0,3,0]}
-    setpeople(p)
 
     rospy.init_node("aes",anonymous=True)
     startsubscribers()
