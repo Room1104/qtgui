@@ -122,7 +122,7 @@ def setpeople(p):
     bad=0
     closeppl=0
     # fuzzy logic on each person
-    for d,a in zip(p['distances'],p['angles']):
+    for d,a in zip(p.distances,p.angles):
         # close is up to 4m away
         close = 1.0-ramp(d,1.0,4.0)
         closeppl = closeppl+close
