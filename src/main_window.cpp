@@ -88,7 +88,7 @@ void MainWindow::showNoMasterMessage() {
 *****************************************************************************/
 
 void MainWindow::onClickButtonSpeak(){
-    qnode.triggerService("qtgui/dispatcher/randomgreet");
+    qnode.triggerService("aes/speak");
 }
 void MainWindow::onClickButtonPet(){
     qnode.triggerService("aes/nice");

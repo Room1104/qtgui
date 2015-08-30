@@ -1,6 +1,5 @@
 <launch>
     <node pkg="qtgui" name="gui" type="qtgui"/>
     <node pkg="qtgui" name="serv" type="dispatcher.py" cwd="node"/>
-    <node pkg="qtgui" name="aes" type="aes.py">
-    </node>
+    <node pkg="qtgui" name="aes" type="aes.py" cwd="node"/>
 </launch>
