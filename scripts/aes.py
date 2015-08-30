@@ -36,6 +36,7 @@ smilecount=0
 tempreleaserate=0
 peoplerelease=0
 homerelease=0
+goingHome = False
 
 def sigmoid(x):
     x=(x-centre)/width
@@ -71,11 +72,28 @@ def utterance():
 def speakserv(req):
     return std_srvs.srv.TriggerResponse(True,utterance());
 
+def gohome():
+    task = Task()
+    task.action = '/wait_action'
+    max_wait_secs = 20
+    task.max_duration = rospy.Duration(max_wait_secs)
+    task_utils.add_time_argument(task, rospy.Time())
+    task_utils.add_duration_argument(task, rospy.Duration(10))
+    task.start_after = rospy.get_rostime() + rospy.Duration(10)
+    task.end_before = task.start_after + rospy.Duration(200)
+    task.start_node_id = 'ChargingPoint'
+    task.end_node_id = task.start_node_id
+    set_execution_status = get_execution_status_service()
+    set_execution_status(True)
+    demand_task = get_demand_task_service()
+    demand_task(task) 
+
 def update():
     global hconc,hlevel,decayrate,releaserate,tempreleaserate,peoplerelease
     global peoplereleasefactor,smilereleasefactor,tempreleasefactor
     global smilecount
     global homerelease,homereleasefactor
+    global goingHome
     r = releaserate
     r = r+tempreleaserate*tempreleasefactor
     r = r+smilecount*smilereleasefactor
@@ -85,6 +103,10 @@ def update():
     tempreleaserate=0
     hconc = (hconc+r)*decayrate
     hlevel = sigmoid(hconc)
+    if hlevel<0.01 and not goingHome:
+        say("I have had enough. I am going home.")
+        gohome()
+        goingHome=True
 
 def startpublisherandwait():
     global hconc,hlevel
@@ -161,9 +183,11 @@ def setpeople(p):
 
 
 def setnode(x):
-    global homerelease
+    global homerelease,goingHome,hlevel
     if x=='ChargingPoint':
         homerelease = 1
+        if hlevel>0.3:
+            goingHome = False
     else:
         homerelease = 0
     
