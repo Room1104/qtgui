@@ -41,8 +41,8 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>10</y>
-         <width>181</width>
+         <y>360</y>
+         <width>201</width>
          <height>71</height>
         </rect>
        </property>
@@ -274,6 +274,38 @@
        </property>
        <property name="text">
         <string>0</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_home">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>10</y>
+         <width>201</width>
+         <height>71</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: bold 36pt &quot;Ubuntu&quot;;</string>
+       </property>
+       <property name="text">
+        <string>HOME</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_find">
+       <property name="geometry">
+        <rect>
+         <x>600</x>
+         <y>180</y>
+         <width>201</width>
+         <height>71</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: bold 36pt &quot;Ubuntu&quot;;</string>
+       </property>
+       <property name="text">
+        <string>FIND</string>
        </property>
       </widget>
      </widget>

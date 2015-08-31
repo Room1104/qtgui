@@ -38,6 +38,8 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     if(!qnode.init())
         showNoMasterMessage();
     // wire up the UI elements here.
+    connect(ui.pushButton_find,SIGNAL(clicked()),this,SLOT(onClickButtonFind()));
+    connect(ui.pushButton_home,SIGNAL(clicked()),this,SLOT(onClickButtonHome()));
     connect(ui.pushButton_speak,SIGNAL(clicked()),this,SLOT(onClickButtonSpeak()));
     connect(ui.pushButton_pet,SIGNAL(clicked()),this,SLOT(onClickButtonPet()));
     connect(ui.pushButton_punish,SIGNAL(clicked()),this,SLOT(onClickButtonPunish()));
@@ -97,11 +99,17 @@ void MainWindow::showNoMasterMessage() {
 void MainWindow::onClickButtonSpeak(){
     qnode.triggerService("aes/speak");
 }
+void MainWindow::onClickButtonFind(){
+    qnode.triggerService("findcoffee");
+}
 void MainWindow::onClickButtonPet(){
     qnode.triggerService("aes/nice");
 }
 void MainWindow::onClickButtonPunish(){
     qnode.triggerService("aes/nasty");
+}
+void MainWindow::onClickButtonHome(){
+    qnode.triggerService("qtgui/dispatcher/home");
 }
 void MainWindow::onClickButton1(){
     qnode.triggerService("qtgui/dispatcher/1");

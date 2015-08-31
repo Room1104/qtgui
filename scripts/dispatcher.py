@@ -68,8 +68,11 @@ def wait_waypoint4(req):
 def wait_waypoint5(req):
     wait_waypoint(5)
     return std_srvs.srv.TriggerResponse(True,'waypoint 5');
+def wait_waypointhome(req):
+    wait_to('Station')
+    return std_srvs.srv.TriggerResponse(True,'station');
 
-def wait_waypoint(wp_num):
+def wait_to(wpname):
     task = Task()
     task.action = '/wait_action'
 
@@ -82,15 +85,42 @@ def wait_waypoint(wp_num):
     task.start_after = rospy.get_rostime() + rospy.Duration(10)
     task.end_before = task.start_after + rospy.Duration(400)
 
-    task.start_node_id = 'WayPoint' + str(wp_num)
-    task.end_node_id = 'WayPoint' + str(wp_num)
+    rospy.logwarn("   HEADING TO "+str(wpname))
+    task.start_node_id = wpname
+    task.end_node_id = wpname
 
     set_execution_status = get_execution_status_service()
     set_execution_status(True)
 
     demand_task = get_demand_task_service()
     demand_task(task) 
-    
+
+
+def wait_waypoint(wp_num):
+    wait_to('WayPoint'+str(wp_num))
+
+def findcoffee(req):
+    task.action = '/find_coffee'
+
+    task.max_duration = rospy.Duration(500)
+
+    task_utils.add_time_argument(task, rospy.Time())
+    task_utils.add_duration_argument(task, rospy.Duration(10))
+
+    task.start_after = rospy.get_rostime() + rospy.Duration(10)
+    task.end_before = task.start_after + rospy.Duration(400)
+
+    rospy.logwarn("   HEADING TO "+str(wpname))
+    task.start_node_id = wpname
+    task.end_node_id = wpname
+
+    set_execution_status = get_execution_status_service()
+    set_execution_status(True)
+
+    demand_task = get_demand_task_service()
+    rospy.logwarn("Find action triggered")
+
+    return std_srvs.srv.TriggerResponse(True,'findcoffee');
 
 # Interface startup stuff
 
@@ -105,6 +135,10 @@ def start_services():
         wait_waypoint4 )    
     rospy.Service('qtgui/dispatcher/5',std_srvs.srv.Trigger,
         wait_waypoint5 )    
+    rospy.Service('qtgui/dispatcher/home',std_srvs.srv.Trigger,
+        wait_waypointhome )    
+    rospy.Service('findcoffee',std_srvs.srv.Trigger,
+        findcoffee )    
     rospy.Service('qtgui/dispatcher/joke',std_srvs.srv.Trigger,
         randomjoke)
     print "services up"

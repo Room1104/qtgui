@@ -130,6 +130,9 @@ def update():
 
     deb = 'TMP:{0} SM:{1} HOME:{2} PPL:{3} --> {4}'.format(
         tempreleaserate,smilecount,homerelease,peoplerelease,r)
+    if goingHome:
+        deb = deb+' (HOMING)'
+    
     if publog!=0:
         publog.publish(deb)
     log(deb)
@@ -145,6 +148,8 @@ def update():
     if time.time() > nextannounce:
         nextannounce = nextannounce+random.uniform(20,120)
         utterance()
+    if hlevel>0.3:
+        goingHome = False
 
 def startpublisherandwait():
     global hconc,hlevel,publog
@@ -235,8 +240,6 @@ def setnode(x):
     global homerelease,goingHome,hlevel
     if x=='Station' or x=='ChargingPoint':
         homerelease = 1
-        if hlevel>0.3:
-            goingHome = False
     else:
         homerelease = 0
     log('hr {0}'.format(homerelease))
