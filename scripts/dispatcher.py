@@ -80,7 +80,7 @@ def wait_waypoint(wp_num):
     task_utils.add_duration_argument(task, rospy.Duration(10))
 
     task.start_after = rospy.get_rostime() + rospy.Duration(10)
-    task.end_before = task.start_after + rospy.Duration(200)
+    task.end_before = task.start_after + rospy.Duration(400)
 
     task.start_node_id = 'WayPoint' + str(wp_num)
     task.end_node_id = 'WayPoint' + str(wp_num)

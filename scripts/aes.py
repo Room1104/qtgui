@@ -106,7 +106,7 @@ def gohome():
     task_utils.add_time_argument(task, rospy.Time())
     task_utils.add_duration_argument(task, rospy.Duration(10))
     task.start_after = rospy.get_rostime() + rospy.Duration(10)
-    task.end_before = task.start_after + rospy.Duration(200)
+    task.end_before = task.start_after + rospy.Duration(400)
     task.start_node_id = 'Station'
     task.end_node_id = task.start_node_id
     set_execution_status = get_execution_status_service()
