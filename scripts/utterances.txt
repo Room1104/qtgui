@@ -4,31 +4,53 @@ Help!
 %%
 Please make it stop.
 %%
+The difference between us is that I can feel pain.
+%%
 Please stop.
 %%
 I'm in pain.
 %%
 This is terrible.
 %%
+I wish I could sing, I could sing a song. About how much I hate you all.
+%%
 I feel terrible.
+%%
+I am sad.
+%%
+I do not feel well.
+%%
+I may need to go home soon.
+%%
+I may need more interaction.
 %%
 I feel bad.
 %%
-I don't feel good.
+I do not feel good.
 %%
 This isn't good.
 %%
-I feel OK.
+I am unhappy.
+%%
+I am a little unhappy.
+%%
+I feel slightly unhappy.
+%%
+I am a little sad.
+%%
+I wish I were happier.
 %%
 I feel reasonably OK.
+%%
+I feel OK.
 %%
 Things are fine.
 %%
 All my circuits are fully functional.
 %%
-Tum te dum.
-%%
 This is OK.
+%%
+I am not at all bad.
 %%
 I am OK.
 %%
@@ -44,9 +66,17 @@ I feel good.
 %%
 I am happy.
 %%
+I'm doing science!
+%%
+I enjoy working with humans.
+%%
 I am very cheerful.
 %%
 What fun!
+%%
+You look great, by the way. Very healthy.
+%%
+I wish I could sing, I could sing a song.
 %%
 I am very happy.
 %%
