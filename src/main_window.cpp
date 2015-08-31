@@ -59,6 +59,10 @@ void MainWindow::setHLevel(double level){
 void MainWindow::setSmiles(int n){
     ui.smiles->setText(QString::number(n));
 }
+void MainWindow::setLog(const std::string s){
+    ui.log->setText(QString(s.c_str()));
+}
+
 
 void MainWindow::updateColour(){
     int r=1,g=1,b=1;

@@ -45,6 +45,7 @@ public:
     }
     void setHLevel(double level);
     void setSmiles(int n);
+    void setLog(const std::string s);
 Q_SIGNALS:
     void colchange();
 public Q_SLOTS:

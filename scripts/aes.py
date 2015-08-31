@@ -32,7 +32,7 @@ tempreleasefactor=rospy.get_param('/aes/nudge',1)
 # amount released by smiles
 smilereleasefactor=rospy.get_param('/aes/smile',0.4)
 # amount released by people
-peoplereleasefactor=rospy.get_param('/aes/people',0.2)
+peoplereleasefactor=rospy.get_param('/aes/people',0.1)
 # amount released by home node
 homereleasefactor=rospy.get_param('/aes/home',0.1)
 
@@ -43,6 +43,11 @@ tempreleaserate=0
 peoplerelease=0
 homerelease=0
 goingHome = False
+publog=0
+
+def log(x):
+    rospy.logwarn(x)
+        
 
 def sigmoid(x):
     x=(x-centre)/width
@@ -78,6 +83,21 @@ def utterance():
 def speakserv(req):
     return std_srvs.srv.TriggerResponse(True,utterance());
 
+def get_service(service_name, service_type):    
+    rospy.loginfo('Waiting for %s service...' % service_name)
+    rospy.wait_for_service(service_name)
+    rospy.loginfo("Done")        
+    return rospy.ServiceProxy(service_name, service_type)
+
+def get_execution_status_service():
+    return get_service('/task_executor/set_execution_status', SetExecutionStatus)
+
+def get_demand_task_service():
+    return get_service('/task_executor/demand_task', DemandTask)
+
+def get_add_tasks_service():
+    return get_service('/task_executor/add_tasks', AddTasks)
+
 def gohome():
     task = Task()
     task.action = '/wait_action'
@@ -87,29 +107,38 @@ def gohome():
     task_utils.add_duration_argument(task, rospy.Duration(10))
     task.start_after = rospy.get_rostime() + rospy.Duration(10)
     task.end_before = task.start_after + rospy.Duration(200)
-    task.start_node_id = 'ChargingPoint'
+    task.start_node_id = 'Station'
     task.end_node_id = task.start_node_id
     set_execution_status = get_execution_status_service()
     set_execution_status(True)
     demand_task = get_demand_task_service()
     demand_task(task) 
+    log('Heading for home - too miserable')
 
 def update():
     global hconc,hlevel,decayrate,releaserate,tempreleaserate,peoplerelease
     global peoplereleasefactor,smilereleasefactor,tempreleasefactor
     global smilecount,nextannounce
     global homerelease,homereleasefactor
-    global goingHome
+    global goingHome,publog
+    
     r = releaserate
     r = r+tempreleaserate*tempreleasefactor
     r = r+smilecount*smilereleasefactor
     r = r+peoplerelease*peoplereleasefactor
     r = r+homerelease*homereleasefactor
+
+    deb = 'TMP:{0} SM:{1} HOME:{2} PPL:{3} --> {4}'.format(
+        tempreleaserate,smilecount,homerelease,peoplerelease,r)
+    if publog!=0:
+        publog.publish(deb)
+    log(deb)
+
     r = r*releasefactor*(0.95-hconc)
     tempreleaserate=0
     hconc = (hconc+r)*decayrate
     hlevel = sigmoid(hconc)
-    if hlevel<0.05 and not goingHome:
+    if hlevel<0.1 and not goingHome:
         say("I have had enough. I am going home.")
         gohome()
         goingHome=True
@@ -118,7 +147,8 @@ def update():
         utterance()
 
 def startpublisherandwait():
-    global hconc,hlevel
+    global hconc,hlevel,publog
+    publog = rospy.Publisher('aeslog',String,queue_size=100)
     pubc = rospy.Publisher('hconc',Float64,queue_size=100)
     publ = rospy.Publisher('hlevel',Float64,queue_size=100)
     rate = rospy.Rate(3) # 3Hz
@@ -175,31 +205,41 @@ def setpeopleOLD(p):
     # we end up with "good/bad", but lots of close people is very bad.
     bad = max(bad,ramp(closeppl,2,4))
     peoplerelease = good-bad
-#    sys.stderr.write(str(peoplerelease)+"\n")
+#    sys.stderr.write(str(peoplerelease)+"\n") 
         
 
 def setpeople(p):
     global peoplerelease
+    nearct=0
     ct=0
     for d,a in zip(p.distances,p.angles):
         if d<4:
             ct=ct+1
-    if ct<2 and ct>0:
-        peoplerelease=1
-    elif ct>=2:
-        peoplerelease=-1
+        if d<2:
+            nearct=nearct+1
+    log('near ppl:{0}, ppl:{1}'.format(nearct,ct))
+    
+    peoplerelease=0
+
+    # lots of people or none make me unhappy
+    if ct>3 or ct<1:
+        peoplerelease=peoplerelease-1
+
+    # less than 3 close people make me happier        
+    if nearct<3 and nearct>1:
+        peoplerelease=peoplerelease+1
                     
 
 
 def setnode(x):
     global homerelease,goingHome,hlevel
-    if x=='ChargingPoint':
+    if x=='Station' or x=='ChargingPoint':
         homerelease = 1
         if hlevel>0.3:
             goingHome = False
     else:
         homerelease = 0
-    
+    log('hr {0}'.format(homerelease))
     
 
 def startsubscribers():
@@ -222,7 +262,6 @@ def startservices():
     
 def start():
     update()
-
     rospy.init_node("aes",anonymous=True)
     startsubscribers()
     startservices()

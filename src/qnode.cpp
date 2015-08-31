@@ -56,7 +56,10 @@ bool QNode::init() {
     hlevel_subscriber = n.subscribe<std_msgs::Float64>("hlevel",1000,
                                                        &QNode::hlevel_callback,this);
     smiles_subscriber = n.subscribe<std_msgs::Int8>("smile_detector",1000,
-                                                       &QNode::smiles_callback,this);
+                                                    &QNode::smiles_callback,this);
+    log_subscriber = n.subscribe<std_msgs::String>("aeslog",1000,
+                                                    &QNode::log_callback,this);
+    
     start();
     return true;
 }
@@ -84,6 +87,9 @@ void QNode::hlevel_callback(std_msgs::Float64 message){
 }
 void QNode::smiles_callback(std_msgs::Int8 message){
     MainWindow::getInstance()->setSmiles(message.data);
+}
+void QNode::log_callback(std_msgs::String message){
+    MainWindow::getInstance()->setLog(message.data);
 }
 
 bool QNode::triggerService(const std::string &s){
