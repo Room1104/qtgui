@@ -1,5 +1,5 @@
 <launch>
-    <include file=$(find twitter_api)/lamor_twitter.launch" />
+    <include file="$(find twitter_api)/lamor_twitter.launch" />
     <node pkg="qtgui" name="gui" type="qtgui"/>
     <node pkg="qtgui" name="serv" type="dispatcher.py" cwd="node"/>
     <node pkg="qtgui" name="aes" type="aes.py" cwd="node"/>
