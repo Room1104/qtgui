@@ -87,12 +87,16 @@ def say(text):
         print "Failed to get result"
         
 def utterance():
-    global hlevel
-    q = random.gauss(hlevel,0.1)
-    q = min(max(q,0),1)
-    q = int(q*(len(utterances)-1))
-    t = utterances[q]
-    say(t)
+    global hlevel,state
+    if state=='HAPPY' and random.random()<0.5:
+        calltrig('/qtgui/dispatcher/joke')
+        t='joke'
+    else:      
+        q = random.gauss(hlevel,0.1)
+        q = min(max(q,0),1)
+        q = int(q*(len(utterances)-1))
+        t = utterances[q]
+        say(t)
     return t
     
 def speakserv(req):
