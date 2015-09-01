@@ -18,6 +18,9 @@ from math import exp
 
 nextannounce = time.time() + 20
 
+state = 'NORMAL'
+
+
 hconc=0
 centre = 0
 width = 0.1
@@ -62,6 +65,14 @@ for x in [x/10.0 for x in range(-10,10)]:
 f = open('utterances.txt','r')
 utterances = [x.strip() for x in f.read().split('%%')]
 
+def calltrig(name):
+    rospy.wait_for_service(name)
+    try:
+        s = rospy.ServiceProxy(name,std_srvs.srv.Trigger)
+        resp = s()
+    except rospy.ServiceException,e:
+        print "Failed: %s" % e
+
 def say(text):
     c = actionlib.SimpleActionClient('speak',mary_tts.msg.maryttsAction)
     if(not c.wait_for_server(timeout=rospy.Duration(10))):
@@ -98,7 +109,7 @@ def get_demand_task_service():
 def get_add_tasks_service():
     return get_service('/task_executor/add_tasks', AddTasks)
 
-def gohome():
+def gowp(name):
     task = Task()
     task.action = '/wait_action'
     max_wait_secs = 20
@@ -107,20 +118,20 @@ def gohome():
     task_utils.add_duration_argument(task, rospy.Duration(10))
     task.start_after = rospy.get_rostime() + rospy.Duration(10)
     task.end_before = task.start_after + rospy.Duration(400)
-    task.start_node_id = 'Station'
+    task.start_node_id = name
     task.end_node_id = task.start_node_id
     set_execution_status = get_execution_status_service()
     set_execution_status(True)
     demand_task = get_demand_task_service()
     demand_task(task) 
-    log('Heading for home - too miserable')
+    log('Heading for %s - too miserable' % name)
 
 def update():
     global hconc,hlevel,decayrate,releaserate,tempreleaserate,peoplerelease
     global peoplereleasefactor,smilereleasefactor,tempreleasefactor
     global smilecount,nextannounce
     global homerelease,homereleasefactor
-    global goingHome,publog
+    global state,publog
     
     r = releaserate
     r = r+tempreleaserate*tempreleasefactor
@@ -128,10 +139,8 @@ def update():
     r = r+peoplerelease*peoplereleasefactor
     r = r+homerelease*homereleasefactor
 
-    deb = 'TMP:{0} SM:{1} HOME:{2} PPL:{3} --> {4}'.format(
-        tempreleaserate,smilecount,homerelease,peoplerelease,r)
-    if goingHome:
-        deb = deb+' (HOMING)'
+    deb = 'TMP:{0} SM:{1} HOME:{2} PPL:{3} --> {4} ({5})'.format(
+        tempreleaserate,smilecount,homerelease,peoplerelease,r,state)
     
     if publog!=0:
         publog.publish(deb)
@@ -141,15 +150,21 @@ def update():
     tempreleaserate=0
     hconc = (hconc+r)*decayrate
     hlevel = sigmoid(hconc)
-    if hlevel<0.1 and not goingHome:
+    if hlevel<0.1 and state=='NORMAL':
         say("I have had enough. I am going home.")
-        gohome()
-        goingHome=True
+        gowp('Station')
+        state='HOMING'
     if time.time() > nextannounce:
         nextannounce = nextannounce+random.uniform(20,120)
         utterance()
-    if hlevel>0.3:
-        goingHome = False
+    if hlevel>0.9:
+        state='HAPPY'
+    elif hlevel>0.3:
+        state='NORMAL'
+        
+    if state=='HAPPY' and homerelease>0.5:
+        gowp('WayPoint1')
+        
 
 def startpublisherandwait():
     global hconc,hlevel,publog
