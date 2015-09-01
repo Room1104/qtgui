@@ -165,7 +165,7 @@ def update():
     if time.time() > nextannounce:
         nextannounce = nextannounce+random.uniform(20,120)
         utterance()
-    if hlevel>0.9:
+    if hlevel>0.8:
         state='HAPPY'
     elif hlevel>0.3:
         state='NORMAL'
