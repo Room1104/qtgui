@@ -38,7 +38,7 @@ smilereleasefactor=rospy.get_param('/aes/smile',0.4)
 # amount released by people
 peoplereleasefactor=rospy.get_param('/aes/people',0.1)
 # amount released by home node
-homereleasefactor=rospy.get_param('/aes/home',0.2)
+homereleasefactor=rospy.get_param('/aes/home',0.4)
 
 
 releaserate=0
@@ -256,9 +256,6 @@ def setpeople(p):
     if nearct<3 and nearct>1:
         peoplerelease=peoplerelease+1
 
-    # quick hack - no people make me only a bit unhappy
-    if ct==0:
-        peoplerelease=-0.5
 
 def setnode(x):
     global homerelease,goingHome,hlevel
