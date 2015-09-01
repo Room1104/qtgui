@@ -28,7 +28,7 @@ I feel bad.
 %%
 I do not feel good.
 %%
-This isn't good.
+This is unpleasant.
 %%
 I am unhappy.
 %%

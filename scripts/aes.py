@@ -38,7 +38,7 @@ smilereleasefactor=rospy.get_param('/aes/smile',0.4)
 # amount released by people
 peoplereleasefactor=rospy.get_param('/aes/people',0.1)
 # amount released by home node
-homereleasefactor=rospy.get_param('/aes/home',0.15)
+homereleasefactor=rospy.get_param('/aes/home',0.2)
 
 
 releaserate=0
@@ -168,8 +168,7 @@ def update():
     if hlevel>0.8:
         state='HAPPY'
     elif hlevel>0.3:
-        state='NORMAL'
-        
+        state='NORMAL'        
     if state=='HAPPY' and homerelease>0.5:
         gowp('WayPoint1')
         
@@ -259,7 +258,7 @@ def setpeople(p):
 
     # quick hack - no people make me only a bit unhappy
     if ct==0:
-        peoplerelease=-0.1
+        peoplerelease=-0.5
 
 def setnode(x):
     global homerelease,goingHome,hlevel
