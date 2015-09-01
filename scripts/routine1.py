@@ -64,7 +64,10 @@ class ExampleRoutine(RobotRoutine):
 
     def on_idle(self):
         """
-            Called when the routine is idle. Default is to trigger travel to the charging. As idleness is determined by the current schedule, if this call doesn't utlimately cause a task schedule to be generated this will be called repeatedly.
+            Called when the routine is idle. Default is to trigger travel
+            to the charging. As idleness is determined by the current
+            schedule, if this call doesn't utlimately cause a task
+            schedule to be generated this will be called repeatedly.
         """
         pose = rospy.wait_for_message("/people_tracker/pose", geometry_msgs.msg.PoseStamped)
 
