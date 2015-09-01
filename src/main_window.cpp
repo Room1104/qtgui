@@ -37,6 +37,7 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     //    if(!qnode.init("http://127.0.0.1:11311/","127.0.0.1"))
     if(!qnode.init())
         showNoMasterMessage();
+    
     // wire up the UI elements here.
     connect(ui.pushButton_find,SIGNAL(clicked()),this,SLOT(onClickButtonFind()));
     connect(ui.pushButton_home,SIGNAL(clicked()),this,SLOT(onClickButtonHome()));
@@ -51,7 +52,8 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     connect(this,SIGNAL(colchange()),this,SLOT(updateColour()));
 }
 
-MainWindow::~MainWindow() {}
+MainWindow::~MainWindow() {
+}
 
 void MainWindow::setHLevel(double level){
     ui.hlevel->setText(QString::number(level));

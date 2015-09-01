@@ -6,6 +6,7 @@ import actionlib
 import random
 import std_srvs.srv
 import mary_tts.msg
+from subprocess import Popen
 from strands_executive_msgs.msg import Task
 from strands_executive_msgs import task_utils
 from strands_executive_msgs.srv import AddTasks, DemandTask, SetExecutionStatus
@@ -51,6 +52,9 @@ publog=0
 def log(x):
     rospy.logwarn(x)
         
+def snd(x):
+    Popen(['aplay',x])
+    
 
 def sigmoid(x):
     x=(x-centre)/width
@@ -270,12 +274,18 @@ def startsubscribers():
     rospy.Subscriber('/current_node',String,
         lambda x: setnode(x.data))
     
+def nice(req):
+    snd('purr.wav')
+    return bumprelease(0.5)
+def nasty(req):
+    snd('slap.wav')
+    return bumprelease(-0.5)
+    
+
         
 def startservices():
-    rospy.Service('aes/nice',std_srvs.srv.Trigger,
-        lambda req: bumprelease(0.5))
-    rospy.Service('aes/nasty',std_srvs.srv.Trigger,
-        lambda req: bumprelease(-0.5))
+    rospy.Service('aes/nice',std_srvs.srv.Trigger,nice)
+    rospy.Service('aes/nasty',std_srvs.srv.Trigger,nasty)
     rospy.Service('aes/speak',std_srvs.srv.Trigger,speakserv)
     
 def start():
