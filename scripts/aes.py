@@ -38,7 +38,7 @@ smilereleasefactor=rospy.get_param('/aes/smile',0.4)
 # amount released by people
 peoplereleasefactor=rospy.get_param('/aes/people',0.1)
 # amount released by home node
-homereleasefactor=rospy.get_param('/aes/home',0.1)
+homereleasefactor=rospy.get_param('/aes/home',0.15)
 
 
 releaserate=0
