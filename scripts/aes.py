@@ -120,7 +120,7 @@ def get_add_tasks_service():
 def gowp(name):
     task = Task()
     task.action = '/wait_action'
-    max_wait_secs = 20
+    max_wait_secs = 300
     task.max_duration = rospy.Duration(max_wait_secs)
     task_utils.add_time_argument(task, rospy.Time())
     task_utils.add_duration_argument(task, rospy.Duration(10))
