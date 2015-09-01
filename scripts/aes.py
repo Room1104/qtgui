@@ -32,7 +32,7 @@ decayrate=rospy.get_param('/aes/decayrate',0.99)
 # release multiplied by this
 releasefactor=rospy.get_param('/aes/release',0.02)
 # amount released by nice/nasty services
-tempreleasefactor=rospy.get_param('/aes/nudge',1)
+tempreleasefactor=rospy.get_param('/aes/nudge',2)
 # amount released by smiles
 smilereleasefactor=rospy.get_param('/aes/smile',0.4)
 # amount released by people
@@ -88,7 +88,7 @@ def say(text):
         
 def utterance():
     global hlevel,state
-    if state=='HAPPY' and random.random()<0.5:
+    if hlevel>0.6 and random.random()<(hlevel*0.5):
         calltrig('/qtgui/dispatcher/joke')
         t='joke'
     else:      
@@ -253,11 +253,13 @@ def setpeople(p):
     if ct>3 or ct<1:
         peoplerelease=peoplerelease-1
 
-    # less than 3 close people make me happier        
+    # less than 3 close people make me happier
     if nearct<3 and nearct>1:
         peoplerelease=peoplerelease+1
-                    
 
+    # quick hack - no people make me only a bit unhappy
+    if ct==0:
+        peoplerelease=-0.1
 
 def setnode(x):
     global homerelease,goingHome,hlevel
