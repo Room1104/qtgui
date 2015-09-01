@@ -88,7 +88,7 @@ def say(text):
         
 def utterance():
     global hlevel,state
-    if hlevel>0.6 and random.random()<(hlevel*0.5):
+    if hlevel>0.6 and random.random()<(hlevel*0.3):
         calltrig('/qtgui/dispatcher/joke')
         t='joke'
     else:      
