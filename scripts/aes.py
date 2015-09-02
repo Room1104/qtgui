@@ -163,7 +163,7 @@ def update():
         gowp('WayPoint14')
         state='HOMING'
     if time.time() > nextannounce:
-        nextannounce = nextannounce+random.uniform(20,120)
+        nextannounce = nextannounce+random.uniform(20,60)
         utterance()
     if hlevel>0.8:
         state='HAPPY'

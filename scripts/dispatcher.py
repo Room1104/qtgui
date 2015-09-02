@@ -69,7 +69,7 @@ def wait_waypoint5(req):
     wait_waypoint(5)
     return std_srvs.srv.TriggerResponse(True,'waypoint 5');
 def wait_waypointhome(req):
-    wait_to('Station')
+    wait_to('WayPoint14')
     return std_srvs.srv.TriggerResponse(True,'station');
 
 def wait_to(wpname):
