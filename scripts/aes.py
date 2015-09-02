@@ -160,7 +160,7 @@ def update():
     hlevel = sigmoid(hconc)
     if hlevel<0.1 and state=='NORMAL':
         say("I have had enough. I am going home.")
-        gowp('Station')
+        gowp('WayPoint14')
         state='HOMING'
     if time.time() > nextannounce:
         nextannounce = nextannounce+random.uniform(20,120)
@@ -259,7 +259,7 @@ def setpeople(p):
 
 def setnode(x):
     global homerelease,goingHome,hlevel
-    if x=='Station' or x=='ChargingPoint':
+    if x=='Station' or x=='ChargingPoint' or x=='WayPoint14':
         homerelease = 1
     else:
         homerelease = 0
